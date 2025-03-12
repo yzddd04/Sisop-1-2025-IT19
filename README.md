@@ -5,7 +5,7 @@
 2. Muhammad Ziddan Habibi - 5027241122
 3. Andi Naufal Zaki - 5027241059
 
-### Deskripsi No. 1
+# Deskripsi No. 1
 Program ini merupakan implementasi dari soal 1 pada praktikum sistem operasi, yang bertujuan untuk menganalisis data dari file `reading_data.csv` menggunakan script Bash dan perintah `awk`.
 
 ## Penjelasan No. 1
@@ -115,7 +115,7 @@ Script `poppo_siroyo.sh` mampu menganalisis data membaca dari `reading_data.csv`
 
 
 
-### Deskripsi No. 4
+# Deskripsi No. 4
 Program ini merupakan implementasi dari soal nomor 4 pada praktikum sistem operasi yang bertujuan untuk menganalisis data dari file `pokemon_usage.csv` menggunakan script Bash dan perintah `awk`.
 
 ## Penjelasan Script No. 4
