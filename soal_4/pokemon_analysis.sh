@@ -12,7 +12,7 @@ fi
 function show_info() {
     echo "Summary of $CSV_FILE"
 
-    # Cari Pokémon dengan Usage% tertinggi
+    # Cari Pokémon dengan Usage% n
     highest_usage=$(awk -F',' 'NR>1 {if($2>max){max=$2;name=$1}} END{print name, max}' "$CSV_FILE")
     echo "Highest Adjusted Usage: $highest_usage%"
 
