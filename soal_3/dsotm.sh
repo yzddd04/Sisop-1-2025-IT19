@@ -58,7 +58,15 @@ cmatrix -u 3 -r
 }
 
 Brain_damage(){
-    ps aux
+    while true; do
+    clear
+    echo "Task Manager - Brain Damage Edition"
+    echo "----------------------------------"
+    echo "PID   USER     %CPU  %MEM  COMMAND"
+    echo "----------------------------------"
+    ps -eo pid,user,%cpu,%mem,cmd --sort=-%cpu | head -20
+    sleep 0.5
+done
 }
 
 case "$RUN" in
