@@ -58,16 +58,17 @@ cmatrix -u 3 -r
 }
 
 Brain_damage(){
-    while true; do
+while true; do
     clear
     echo "Task Manager - Brain Damage Edition"
-    echo "----------------------------------"
-    echo "PID   USER     %CPU  %MEM  COMMAND"
-    echo "----------------------------------"
-    ps -eo pid,user,%cpu,%mem,cmd --sort=-%cpu | head -20
-    sleep 0.5
+    echo "------------------------------------------------------------"
+    printf "%-8s %-10s %-5s %-5s %-s\n" "PID" "USER" "%CPU" "%MEM" "COMMAND"
+    echo "------------------------------------------------------------"
+    ps -eo pid,user,%cpu,%mem,cmd --sort=-%cpu | awk 'NR==1 || NR<=20 {printf "%-8s %-10s %-5s %-5s %-s\n", $1, $2, $3, $4, $5}'
+    sleep 1
 done
 }
+
 
 case "$RUN" in
     "speak to me")
