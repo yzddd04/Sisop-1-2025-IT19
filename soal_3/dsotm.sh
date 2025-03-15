@@ -54,7 +54,22 @@ Time(){
 }
 
 money(){
-cmatrix -u 3 -r
+symbols=("$" "€" "£" "¥" "¢" "₹" "₩" "₿" "₣")
+cols=$(tput cols)
+rows=$(tput lines)
+
+declare -A positions
+
+while true; do
+    for ((i=0; i<$cols; i++)); do
+        if (( RANDOM % 10 < 2 )); then
+            positions[$i]=$(( (positions[$i] + 1) % rows ))
+            tput cup ${positions[$i]} $i
+            echo -ne "\033[32m${symbols[RANDOM % ${#symbols[@]}]}\033[0m"
+        fi
+    done
+    sleep 0.1
+done
 }
 
 Brain_damage(){
