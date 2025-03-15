@@ -11,21 +11,21 @@ for arg in "$@"; do
     esac
 done
 
-
+#menunjukan apabila argumen yang salah maka menunjukan cara Nge Run yang benar
 if [[ -z "$RUN" ]]; then
     echo "Usage: ./dsotm.sh --play=\"<RUN>\""
     echo "Available runs: speak to me, on the run, Time, Money, Brain Damage"
     exit 1
 fi
 
-
+#case pertama 
 speak_to_me(){
     for i in {1..10}; do
         curl -s "https://www.affirmations.dev" | jq -r '.affirmation'
         sleep 1
     done
 }
-
+#case kedua
 on_the_run(){
     function ProgressBar {
         let _progress=(${1}*100/${2}*100)/100
@@ -44,7 +44,7 @@ on_the_run(){
     done
     printf '\nFinished!\n'
 }
-
+#case ketiga
 Time(){
     while true; do
         clear
@@ -52,7 +52,7 @@ Time(){
         sleep 1
     done
 }
-
+#case ke empat
 money(){
 symbols=("$" "€" "£" "¥" "¢" "₹" "₩" "₿" "₣")
 cols=$(tput cols)
@@ -71,7 +71,7 @@ while true; do
     sleep 0.1
 done
 }
-
+#case kelima
 Brain_damage(){
 while true; do
     clear
@@ -84,7 +84,7 @@ while true; do
 done
 }
 
-
+#agar dapat memilih satu fungsi yang ingin dijalankan dengan cara --play"nama fungsi(ex:Time)"
 case "$RUN" in
     "speak to me")
         speak_to_me
@@ -102,6 +102,7 @@ case "$RUN" in
         Brain_damage
         ;;
     *)
+    #jika salah nama fungsinya menunjukan nama fungsi yang benarnya
         echo "Usage: ./dsotm.sh --play=\"<RUN>\""
         echo "Available runs: speak to me, on the run, Time, Money, Brain Damage"
         ;;
