@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Jika file CSV tidak diberikan, coba gunakan default "pokemon_usage.csv"
-if [ "$#" -lt 2 ]; then
+if [ "$#" -lt 2 ]; then # $# = variabel khusus, -lt = less than
     if [[ "$1" == "-h" || "$1" == "--help" ]]; then
         COMMAND="$1"
     else
@@ -13,18 +12,22 @@ else
     COMMAND=$2
 fi
 
-# Cek apakah file CSV ada di direktori
-if [ ! -f "$FILE" ]; then
+if [ ! -f "$FILE" ]; then # -f = file reguler
     echo "Error: File $FILE tidak ditemukan!"
     exit 1
 fi
 
+
+
 case "$COMMAND" in
+
+    # A. block Melihat summary dari data
     --info)
         echo "Summary of $FILE"
         awk -F',' 'NR>1 {if($2>maxUsage){maxUsage=$2;nameUsage=$1} if($3>maxRaw){maxRaw=$3;nameRaw=$1}} END {printf "Highest Adjusted Usage: %s with %.5f%%\nHighest Raw Usage: %s with %d uses\n", nameUsage, maxUsage, nameRaw, maxRaw}' "$FILE"
         ;;
     
+    # B. block Mengurutkan Pokemon berdasarkan data kolom
     --sort)
         if [ -z "$3" ]; then
             echo "Error: Harap tentukan kolom untuk diurutkan."
@@ -50,6 +53,7 @@ case "$COMMAND" in
         fi
         ;;
     
+    # C. block Mencari nama Pokemon tertentu
     --grep)
         if [ -z "$3" ]; then
             echo "Error: Harap masukkan nama Pokémon yang dicari."
@@ -58,14 +62,24 @@ case "$COMMAND" in
         grep -i "^$3," "$FILE" | sort -t',' -k2 -nr
         ;;
     
+    # D. block Mencari Pokemon berdasarkan filter nama type
     --filter)
         if [ -z "$3" ]; then
-            echo "Error: Harap masukkan tipe Pokémon yang dicari."
+            echo "Error: no filter option provided"
+            echo "Use -h or --help for more information"
             exit 1
         fi
         awk -F',' -v type="$3" 'NR==1 || ($4 == type || $5 == type)' "$FILE" | sort -t',' -k2 -nr
         ;;
     
+    # E. block Error handling
+    *)
+        echo "Error: no filter option provided"
+        echo "Use -h or --help for more information"
+        exit 1
+        ;;
+
+    # F. block Help screen yang menarik
     -h|--help)
         echo "
                                                    @@%                                         
@@ -97,10 +111,7 @@ case "$COMMAND" in
    --filter [tipe]    Mencari Pokémon berdasarkan tipe
    -h, --help         Menampilkan help screen
         "
-        ;;
+        ;; # ;; = tanda akhir blok
     
-    *)
-        echo "Error: Perintah tidak valid. Gunakan -h atau --help untuk panduan."
-        exit 1
-        ;;
+
 esac
