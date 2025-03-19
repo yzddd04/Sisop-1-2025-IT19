@@ -20,6 +20,7 @@ fi
 
 #case pertama 
 speak_to_me(){
+    clear
     for i in {1..10}; do
         curl -s "https://www.affirmations.dev" | jq -r '.affirmation'
         sleep 1
@@ -38,6 +39,7 @@ on_the_run(){
 
     _start=1
     _end=100
+    clear
     for number in $(seq ${_start} ${_end}); do
         sleep $(awk -v min=0.1 -v max=1 'BEGIN{srand(); print min+rand()*(max-min)}')
         ProgressBar ${number} ${_end}
@@ -54,21 +56,70 @@ Time(){
 }
 #case ke empat
 money(){
-symbols=("$" "€" "£" "¥" "¢" "₹" "₩" "₿" "₣")
-cols=$(tput cols)
-rows=$(tput lines)
+### Kustomisasi:
+biru="\033[0;34m"
+biruterang="\033[1;34m"
+cyan="\033[0;36m"
+cyanterang="\033[1;36m"
+hijau="\033[0;32m"
+hijauterang="\033[1;32m"
+merah="\033[0;31m"
+merahterang="\033[1;31m"
+putih="\033[1;37m"
+hitam="\033[0;30m"
+abu="\033[0;37m"
+abugelap="\033[1;30m"
 
-declare -A positions
+# Pilih warna yang akan digunakan dari daftar di atas
+# Daftar warna dipisahkan dengan spasi
+warnaterpilih=($abu $biruterang $merahterang $cyanterang)
 
-while true; do
-    for ((i=0; i<$cols; i++)); do
-        if (( RANDOM % 10 < 2 )); then
-            positions[$i]=$(( (positions[$i] + 1) % rows ))
-            tput cup ${positions[$i]} $i
-            echo -ne "\033[32m${symbols[RANDOM % ${#symbols[@]}]}\033[0m"
-        fi
-    done
-    sleep 0.1
+jarak=${1:-100}
+pergeseran=${2:-0} # 0 untuk statis, angka positif menentukan kecepatan pergeseran
+barislayar=$(expr `tput lines` - 1 + $pergeseran)
+kolomlayar=$(expr `tput cols` / 2 - 1)
+
+# Karakter yang digunakan
+karakter=("$" "€" "£" "¥" "¢" "₹" "₩" "₿" "₣")
+
+jumlahkarakter=${#karakter[@]}
+jumlahwarna=${#warnaterpilih[@]}
+
+trap "tput sgr0; clear; exit" SIGTERM SIGINT
+
+if [[ $1 =~ '-h' ]]; then
+echo "Tampilkan efek Matrix di terminal"
+echo "Penggunaan:    matrix [JARAK [PERGESERAN]]"
+echo "Contoh:        matrix 100 0"
+exit 0
+fi
+
+clear
+tput cup 0 0
+while :
+do 
+for i in $(eval echo {1..$barislayar})
+do 
+for i in $(eval echo {1..$kolomlayar})
+do 
+acak=$(($RANDOM%$jarak))
+case $acak in
+0)
+printf "${warnaterpilih[$RANDOM%$jumlahwarna]}${karakter[$RANDOM%$jumlahkarakter]} "
+;;
+1)
+printf "  "
+;;
+*)
+printf "\033[2C"
+;;
+esac
+done
+printf "\n"
+
+# jeda .005 detik
+done
+tput cup 0 0
 done
 }
 #case kelima
