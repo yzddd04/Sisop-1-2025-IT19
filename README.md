@@ -158,6 +158,136 @@ out put yang akan muncul :
 ![image](https://github.com/user-attachments/assets/19359b7a-b2b9-4568-a762-b3704eeee948)
 
 
+### Case 2 ( on the run )
+
+```bash
+on_the_run(){
+    function ProgressBar {
+        let _progress=(${1}*100/${2}*100)/100
+        let _done=(${_progress}*4)/10
+        let _left=40-$_done
+        _fill=$(printf "%${_done}s")
+        _empty=$(printf "%${_left}s")
+        printf "\rProgress : [${_fill// /#}${_empty// /-}] ${_progress}%%"
+    }
+
+    _start=1
+    _end=100
+    clear
+    for number in $(seq ${_start} ${_end}); do
+        sleep $(awk -v min=0.1 -v max=1 'BEGIN{srand(); print min+rand()*(max-min)}')
+        ProgressBar ${number} ${_end}
+    done
+    printf '\nFinished!\n'
+}
+```
+Fungsi ini menampilkan progres bar sederhana yang menunjukkan persentase kemajuan dari 0% hingga 100%. Di dalam fungsi ini, terdapat fungsi internal bernama ProgressBar, yang bertanggung jawab untuk menghitung dan mencetak progres berdasarkan dua parameter: nilai saat ini ```($1)``` dan nilai akhir ```bash($2)```. Fungsi ini menggunakan perhitungan matematika ```bashlet _progress=(${1}*100/${2}*100)/100``` untuk menghitung persentase kemajuan, lalu menentukan berapa banyak karakter # yang harus ditampilkan dalam progress bar. Di dalam perulangan ```bashfor number in $(seq ${_start} ${_end}); do```, nilai number akan bertambah dari 1 hingga 100, dan setiap iterasi akan memperbarui progress bar. Untuk memberikan efek visual yang lebih dinamis, waktu tidur antar iterasi ditentukan secara acak menggunakan awk -v min=0.1 -v max=1 'BEGIN{srand(); print min+rand()*(max-min)}', yang memberikan jeda waktu antara 0.1 hingga 1 detik. Setelah progres mencapai 100%, skrip mencetak pesan "Finished!" untuk menandakan bahwa proses telah selesai.
+
+
+![image](https://github.com/user-attachments/assets/bb21659c-44c7-441b-90f4-1be8097cf482)
+
+### Case 3 ( Time )
+
+```bash
+Time(){
+    while true; do
+        clear
+        date "+%d:%m:%y  %H:%M:%S"
+        sleep 1
+    done
+}
+```
+Fungsi Time dirancang untuk menampilkan waktu saat ini yang diperbarui setiap detik. Dalam perulangan while true; do, skrip akan terus membersihkan layar (clear) dan mencetak waktu saat ini menggunakan perintah date "+%d:%m:%y %H:%M:%S". Format yang digunakan menampilkan tanggal dalam format dd:mm:yy dan waktu dalam format HH:MM:SS. Setelah mencetak waktu, skrip akan berhenti sejenak selama satu detik dengan sleep 1 sebelum mengulang kembali perulangan, sehingga pengguna dapat melihat waktu berjalan secara real-time.
+
+
+![image](https://github.com/user-attachments/assets/be8becdf-1705-4090-8095-741c0128e06b)
+
+### Case 4 ( Money )
+```bash
+money(){
+### Kustomisasi warna
+biru="\033[0;34m"
+biruterang="\033[1;34m"
+cyan="\033[0;36m"
+cyanterang="\033[1;36m"
+hijau="\033[0;32m"
+hijauterang="\033[1;32m"
+merah="\033[0;31m"
+merahterang="\033[1;31m"
+putih="\033[1;37m"
+hitam="\033[0;30m"
+abu="\033[0;37m"
+abugelap="\033[1;30m"
+
+warnaterpilih=($abu $biruterang $merahterang $cyanterang)
+
+jarak=${1:-100}
+pergeseran=${2:-0}
+barislayar=$(expr `tput lines` - 1 + $pergeseran)
+kolomlayar=$(expr `tput cols` / 2 - 1)
+
+karakter=("$" "€" "£" "¥" "¢" "₹" "₩" "₿" "₣")
+
+jumlahkarakter=${#karakter[@]}
+jumlahwarna=${#warnaterpilih[@]}
+
+trap "tput sgr0; clear; exit" SIGTERM SIGINT
+
+clear
+tput cup 0 0
+while :
+do 
+for i in $(eval echo {1..$barislayar})
+do 
+for i in $(eval echo {1..$kolomlayar})
+do 
+acak=$(($RANDOM%$jarak))
+case $acak in
+0)
+printf "${warnaterpilih[$RANDOM%$jumlahwarna]}${karakter[$RANDOM%$jumlahkarakter]} "
+;;
+1)
+printf "  "
+;;
+*)
+printf "\033[2C"
+;;
+esac
+done
+printf "\n"
+done
+tput cup 0 0
+done
+}
+```
+
+Fungsi ini menciptakan efek visual hujan mata uang seperti efek "The Matrix" di terminal. Pertama, skrip mendefinisikan berbagai kode warna ANSI untuk menghasilkan tampilan warna-warni. Warna-warna ini disimpan dalam array warnaterpilih, yang kemudian digunakan secara acak. Skrip juga mendefinisikan array karakter, yang berisi simbol mata uang seperti $, €, £, ¥, ₹, dan sebagainya.
+Setelah semua variabel diatur, skrip mulai menampilkan efek dengan perulangan while : yang berjalan selamanya. Di dalamnya, ada dua perulangan bersarang: yang pertama untuk iterasi baris (for i in $(eval echo {1..$barislayar})), dan yang kedua untuk iterasi kolom (for i in $(eval echo {1..$kolomlayar})). Setiap iterasi akan secara acak memilih apakah mencetak simbol mata uang atau hanya spasi kosong (printf " "), sehingga efek hujan terlihat lebih acak dan alami. Ketika terminal mencapai bagian paling bawah, skrip akan mengembalikan kursor ke posisi awal (tput cup 0 0), menciptakan ilusi bahwa karakter terus mengalir dari atas ke bawah.
+
+
+![image](https://github.com/user-attachments/assets/7ead542a-62e1-44ff-94a4-5aa5d38788c8)
+
+
+### Case 5 ( Brain Damage )
+```bash
+Brain_damage(){
+while true; do
+    clear
+    echo "Task Manager - Brain Damage Edition"
+    echo "------------------------------------------------------------"
+    printf "%-8s %-10s %-5s %-5s %-s\n" "PID" "USER" "%CPU" "%MEM" "COMMAND"
+    echo "------------------------------------------------------------"
+    ps -eo pid,user,%cpu,%mem,cmd --sort=-%cpu | awk 'NR==1 || NR<=20 {printf "%-8s %-10s %-5s %-5s %-s\n", $1, $2, $3, $4, $5}'
+    sleep 1
+done
+}
+```
+Fungsi ini bertindak seperti "Task Manager" yang menunjukkan daftar proses yang berjalan dalam sistem. Skrip ini menggunakan perintah ps -eo pid,user,%cpu,%mem,cmd --sort=-%cpu, yang mengambil daftar proses yang sedang berjalan, lalu mengurutkannya berdasarkan penggunaan CPU tertinggi (--sort=-%cpu). Kemudian, awk digunakan untuk memformat output sehingga hanya 20 proses pertama yang ditampilkan. Dalam perulangan while true; do, skrip akan terus membersihkan layar (clear), mencetak header tabel dengan printf, lalu menampilkan daftar proses yang diperbarui setiap satu detik (sleep 1).
+
+
+
+
+
 
 ## Soal NO 4 ( Ahmad Yazid Arifuddin - 5027241040 )
 ### 1. Melihat Ringkasan Data (`--info`)
