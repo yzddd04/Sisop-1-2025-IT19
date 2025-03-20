@@ -47,6 +47,7 @@ awk -F',' '$2 ~ /Chris Hemsworth/ {count++} END {print count}' "$FILE"
 Masukkan pilihan (1a/1b/1c/1d): 1a
 ```
 **Contoh Output:**
+![Logo Project](https://github.com/yzddd04/Sisop-1-2025-IT19/issues/1#issue-2936061016)
 ```
 Chris Hemsworth membaca 5 buku.
 ```
@@ -67,6 +68,7 @@ awk -F',' '$8 ~ /Tablet/ {sum+=$6; count++} END {if (count > 0) print sum/count;
 Masukkan pilihan (1a/1b/1c/1d): 1b
 ```
 **Contoh Output:**
+![Logo Project](https://github.com/yzddd04/Sisop-1-2025-IT19/issues/1#issuecomment-2741050232)
 ```
 Rata-rata durasi membaca dengan Tablet adalah 42.75 menit.
 ```
@@ -87,10 +89,10 @@ awk -F',' 'NR==1{next} {if($7 > max) {max=$7; name=$2; book=$3}} END {print name
 Masukkan pilihan (1a/1b/1c/1d): 1c
 ```
 **Contoh Output:**
+![Logo Project](https://github.com/yzddd04/Sisop-1-2025-IT19/issues/1#issuecomment-2741052203)
 ```
 Pembaca dengan rating tertinggi: John Doe - "The Great Gatsby" - 5.0
 ```
-
 ---
 ### 1d - Mencari genre paling populer di Asia setelah 31 Desember 2023
 **Operasi yang dilakukan:**
@@ -107,6 +109,7 @@ awk -F',' '$9 ~ /Asia/ && $5 > "2023-12-31" {count[$4]++} END {for (g in count) 
 Masukkan pilihan (1a/1b/1c/1d): 1d
 ```
 **Contoh Output:**
+![Logo Project](https://github.com/yzddd04/Sisop-1-2025-IT19/issues/1#issuecomment-2741052526)
 ```
 Genre paling populer di Asia setelah 2023 adalah Fiksi dengan 12 buku.
 ```
