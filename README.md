@@ -139,6 +139,23 @@ Skrip Bash ini digunakan untuk menganalisis data penggunaan Pokemon dari file CS
    - `-h` atau `--help` : Menampilkan bantuan.
 
 
+## Soal No 3 ( Muhammad Ziddan Habibi - 5027241122 )
+### Case 1 ( speak to me )
+
+speak_to_me(){
+    clear
+    for i in {1..10}; do
+        curl -s "https://www.affirmations.dev" | jq -r '.affirmation'
+        sleep 1
+    done
+}
+Fungsi ini bertujuan untuk menampilkan sepuluh kutipan motivasi yang diambil dari situs https://www.affirmations.dev. Saat fungsi ini dijalankan, pertama-tama layar akan dibersihkan dengan perintah clear. Kemudian, dalam sebuah loop yang berjalan sebanyak sepuluh kali (for i in {1..10}; do), skrip akan menggunakan curl -s untuk mengambil data dari API situs tersebut, lalu memprosesnya menggunakan jq -r '.affirmation' agar hanya teks afirmasi yang ditampilkan. Setelah setiap kutipan ditampilkan, skrip akan menunggu selama satu detik (sleep 1) sebelum mengambil kutipan berikutnya. Hal ini memberikan efek seolah-olah pengguna sedang membaca kutipan satu per satu dalam interval waktu tertentu.
+out put yang akan muncul :
+
+![image](https://github.com/user-attachments/assets/19359b7a-b2b9-4568-a762-b3704eeee948)
+
+
+
 ## Soal NO 4 ( Ahmad Yazid Arifuddin - 5027241040 )
 ### 1. Melihat Ringkasan Data (`--info`)
 **Operasi yang dilakukan:**
