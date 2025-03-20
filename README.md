@@ -1,9 +1,9 @@
 # README
 
 ## Anggota Kelompok
-1. Ahmad Yazid Arifuddin - 5027241040
-2. Muhammad Ziddan Habibi -	5027241122
-3. Andi Naufal Zaki	- 5027241059
+1. Ahmad Yazid Arifuddin - 5027241040 (no. 1 & 4)
+2. Muhammad Ziddan Habibi -	5027241122 (no. 3)
+3. Andi Naufal Zaki	- 5027241059 (no. 2)
 
 
 ## Soal NO 1 ( Ahmad Yazid Arifuddin - 5027241040 )
@@ -115,6 +115,136 @@ Genre paling populer di Asia setelah 2023 adalah Fiksi dengan 12 buku.
 - Pastikan format CSV sesuai dengan urutan kolom yang digunakan dalam skrip agar hasilnya akurat.
 - Format tanggal dalam file CSV harus dalam format `YYYY-MM-DD`.
 
-## Lisensi
-Skrip ini bebas digunakan dan dimodifikasi sesuai kebutuhan.
+# README
+
+## Deskripsi
+Skrip Bash ini digunakan untuk menganalisis data penggunaan Pokemon dari file CSV `pokemon_usage.csv`. Skrip ini memungkinkan pengguna untuk melihat ringkasan data, mengurutkan berdasarkan kolom tertentu, mencari Pokemon berdasarkan nama, serta memfilter berdasarkan tipe.
+
+## Prasyarat
+- Sistem operasi berbasis UNIX/Linux dengan Bash.
+- File `pokemon_usage.csv` harus tersedia dalam direktori yang sama dengan skrip.
+- File CSV harus memiliki format dengan kolom yang sesuai dengan operasi yang dilakukan dalam skrip.
+
+## Cara Penggunaan
+1. Pastikan file `pokemon_usage.csv` tersedia di direktori yang sama dengan skrip ini.
+2. Jalankan skrip dengan perintah berikut:
+   ```bash
+   ./pokemon_analysis.sh [file] [command] [option]
+   ```
+3. Pilih salah satu perintah yang tersedia:
+   - `--info` : Menampilkan ringkasan data.
+   - `--sort [kolom]` : Mengurutkan Pokemon berdasarkan kolom tertentu (usage, raw, name, hp, atk, def, spatk, spdef, speed).
+   - `--grep [nama]` : Mencari Pokemon berdasarkan nama.
+   - `--filter [tipe]` : Mencari Pokemon berdasarkan tipe.
+   - `-h` atau `--help` : Menampilkan bantuan.
+
+
+## Soal NO 4 ( Ahmad Yazid Arifuddin - 5027241040 )
+### 1. Melihat Ringkasan Data (`--info`)
+**Operasi yang dilakukan:**
+- Menggunakan `awk` untuk mencari Pokemon dengan penggunaan tertinggi berdasarkan kolom `Usage%` dan `Raw Usage`.
+
+**Kode:**
+```bash
+awk -F',' 'NR>1 {if($2>maxUsage){maxUsage=$2;nameUsage=$1} if($3>maxRaw){maxRaw=$3;nameRaw=$1}} END {printf "Highest Adjusted Usage: %s with %.5f%%\nHighest Raw Usage: %s with %d uses\n", nameUsage, maxUsage, nameRaw, maxRaw}' "$FILE"
+```
+
+**Contoh Input:**
+```bash
+./pokemon_analysis.sh pokemon_usage.csv --info
+```
+**Contoh Output:**
+```
+Highest Adjusted Usage: Pikachu with 25.67345%
+Highest Raw Usage: Charizard with 3450 uses
+```
+
+---
+### 2. Mengurutkan Pokemon (`--sort [kolom]`)
+**Operasi yang dilakukan:**
+- Menggunakan `sort` untuk mengurutkan Pokemon berdasarkan kolom yang dipilih.
+
+**Kode:**
+```bash
+sort -t',' -k$column -nr "$FILE"
+```
+
+**Contoh Input:**
+```bash
+./pokemon_analysis.sh pokemon_usage.csv --sort usage
+```
+**Contoh Output:**
+```
+Pokemon dengan penggunaan tertinggi ditampilkan secara berurutan.
+```
+
+---
+### 3. Mencari Pokemon berdasarkan Nama (`--grep [nama]`)
+**Operasi yang dilakukan:**
+- Menggunakan `grep` untuk mencari Pokemon berdasarkan nama yang diberikan.
+- Menggunakan `sort` untuk mengurutkan hasil berdasarkan `Usage%`.
+
+**Kode:**
+```bash
+grep -i "^$3," "$FILE" | sort -t',' -k2 -nr
+```
+
+**Contoh Input:**
+```bash
+./pokemon_analysis.sh pokemon_usage.csv --grep Pikachu
+```
+**Contoh Output:**
+```
+Pikachu, 25.67345, 2000, Electric, -
+```
+
+---
+### 4. Memfilter Pokemon berdasarkan Tipe (`--filter [tipe]`)
+**Operasi yang dilakukan:**
+- Menggunakan `awk` untuk memfilter Pokemon berdasarkan tipe yang dipilih.
+- Menggunakan `sort` untuk mengurutkan berdasarkan `Usage%`.
+
+**Kode:**
+```bash
+awk -F',' -v type="$3" 'NR==1 || ($4 == type || $5 == type)' "$FILE" | sort -t',' -k2 -nr
+```
+
+**Contoh Input:**
+```bash
+./pokemon_analysis.sh pokemon_usage.csv --filter Fire
+```
+**Contoh Output:**
+```
+Charizard, 20.12345, 3450, Fire, Flying
+Blaziken, 15.98765, 2100, Fire, Fighting
+```
+
+---
+### 5. Menampilkan Bantuan (`-h` atau `--help`)
+**Operasi yang dilakukan:**
+- Menampilkan petunjuk penggunaan skrip dengan daftar perintah yang tersedia.
+
+**Contoh Input:**
+```bash
+./pokemon_analysis.sh -h
+```
+**Contoh Output:**
+```
+POKÉMON ANALYSIS TOOL
+===============================
+Usage: ./pokemon_analysis.sh [file] [command] [option]
+Commands:
+--info             Menampilkan Pokemon dengan Usage% dan Raw Usage tertinggi.
+--sort [kolom]     Mengurutkan berdasarkan kolom (usage, raw, name, hp, atk, def, spatk, spdef, speed).
+--grep [nama]      Mencari Pokemon berdasarkan nama.
+--filter [tipe]    Mencari Pokemon berdasarkan tipe.
+-h, --help         Menampilkan help screen.
+```
+
+## Catatan
+- Pastikan format CSV sesuai dengan urutan kolom yang digunakan dalam skrip agar hasilnya akurat.
+- Format file CSV harus sesuai dengan yang diharapkan agar skrip dapat berjalan dengan baik.
+
+
+
 
