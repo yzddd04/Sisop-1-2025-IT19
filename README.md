@@ -284,6 +284,9 @@ done
 ```
 Fungsi ini bertindak seperti "Task Manager" yang menunjukkan daftar proses yang berjalan dalam sistem. Skrip ini menggunakan perintah ```ps -eo pid,user,%cpu,%mem,cmd --sort=-%cpu```, yang mengambil daftar proses yang sedang berjalan, lalu mengurutkannya berdasarkan penggunaan CPU tertinggi ```(--sort=-%cpu)```. Kemudian, ```awk``` digunakan untuk memformat output sehingga hanya 20 proses pertama yang ditampilkan. Dalam perulangan ```while true; do```, skrip akan terus membersihkan layar ```(clear)```, mencetak header tabel dengan ```printf```, lalu menampilkan daftar proses yang diperbarui setiap satu detik ```(sleep 1)```.
 
+![image](https://github.com/user-attachments/assets/479ff525-1b56-4b43-84c3-1d6dfee99d5f)
+
+
 
 
 
